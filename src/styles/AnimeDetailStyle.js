@@ -42,6 +42,11 @@ export const Back = styled(IoIosArrowRoundBack)`
     transform: scale(1.2);
     transition: transform 0.125s ease-out;
   }
+
+  @media only screen and (max-width: ${breakpoints.medium}) {
+   top: 46px;
+  left: 54px
+  }
 `;
 
 export const Info = styled.div`
@@ -59,6 +64,7 @@ export const Info = styled.div`
   }
 
   @media only screen and (max-width: ${breakpoints.medium}) {
+    margin: 64px 112px;
     flex-direction: column;
     align-items: center;
     gap: 16px;
@@ -75,7 +81,7 @@ export const Title = styled.h1`
   font-size: 2.8rem;
   font-weight: 500;
   text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-  
+
   @media only screen and (max-width: ${breakpoints.medium}) {
     font-size: 2.4rem;
   }
