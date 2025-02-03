@@ -13,6 +13,7 @@ const PaginationButtons = styled.div`
   justify-content: center;
   gap: 24px;
   margin: 32px 0;
+  flex-wrap: wrap;
 
   a {
     cursor: pointer;
@@ -48,27 +49,61 @@ const ActivePage = styled.a`
   background-color: #ffdd95;
 `;
 
-function Pagination({ currentPage, setCurrentPage, totalPage }) {
+function Pagination({
+  currentPage,
+  setCurrentPage,
+  totalPage,
+  setOffset,
+  totalAnime,
+  loading,
+}) {
   const [pageNumbers, setPageNumbers] = useState([]);
 
   useEffect(() => {
-    setPageNumbers([
-      1,
-      ...(totalPage > 1 ? [2, totalPage - 1, totalPage] : []),
-    ]);
-  }, [totalPage]);
+    if (!loading) {
+      if (totalPage < 5) {
+        setPageNumbers(Array.from({ length: totalPage }, (_, i) => i + 1));
+      } else {
+        if (currentPage <= 2) {
+          setPageNumbers([1, 2, 3, 4, 5]);
+        } else if (currentPage >= totalPage - 4) {
+          setPageNumbers(
+            Array.from({ length: 5 }, (_, i) => i + totalPage - 4)
+          );
+        } else if (currentPage > 2) {
+          setPageNumbers([
+            currentPage - 2,
+            currentPage - 1,
+            currentPage,
+            ...(currentPage + 1 < totalPage && [currentPage + 1]),
+            ...(currentPage + 2 < totalPage && [currentPage + 2]),
+          ]);
+        }
+      }
+      setOffset(((currentPage - 1) * 10) % totalAnime);
+    }
+  }, [currentPage, totalPage]);
+
+  const handleClick = (page) => {
+    if (!loading) {
+      let newPage = currentPage;
+      if (page === "first") newPage = 1;
+      else if (page === "last") newPage = totalPage;
+      else if (page === "previous") newPage = Math.max(1, currentPage - 1);
+      else if (page === "next") newPage = Math.min(totalPage, currentPage + 1);
+      setCurrentPage(newPage);
+    }
+  };
 
   return (
     <PaginationButtons>
-      <a onClick={() => setCurrentPage(1)}>
+      <a onClick={() => handleClick("first")}>
         <BsChevronDoubleLeft size={20} />
       </a>
-      <a
-        onClick={() => setCurrentPage((prev) => (prev !== 1 ? prev - 1 : prev))}
-      >
+      <a onClick={() => handleClick("previous")}>
         <BsChevronLeft size={20} />
       </a>
-      {pageNumbers.map((number, index) =>
+      {pageNumbers.map((number) =>
         currentPage == number ? (
           <ActivePage key={number} onClick={() => setCurrentPage(number)}>
             {number}
@@ -79,14 +114,10 @@ function Pagination({ currentPage, setCurrentPage, totalPage }) {
           </a>
         )
       )}
-      <a
-        onClick={() =>
-          setCurrentPage((prev) => (prev !== totalPage ? prev + 1 : prev))
-        }
-      >
+      <a onClick={() => handleClick("next")}>
         <BsChevronRight size={20} />
       </a>
-      <a onClick={() => setCurrentPage(totalPage)}>
+      <a onClick={() => handleClick("last")}>
         <BsChevronDoubleRight size={20} />
       </a>
     </PaginationButtons>

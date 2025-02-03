@@ -1,6 +1,7 @@
 import { FaDiscord, FaRedditAlien, FaTelegramPlane } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import styled from "styled-components";
+import { Link } from "react-router";
 import { breakpoints } from "../constant";
 
 const FooterDiv = styled.footer`
@@ -27,6 +28,7 @@ const Title = styled.h1`
   text-transform: uppercase;
   text-align: center;
   color: #ffdd95;
+  text-decoration: none;
 
   span {
     color: white;
@@ -60,7 +62,7 @@ function Footer({}) {
   return (
     <FooterDiv>
       <Links>
-        <Title>
+        <Title as={Link} to={`/`}>
           Anim <span>Flix</span>
         </Title>
         <Socials>
