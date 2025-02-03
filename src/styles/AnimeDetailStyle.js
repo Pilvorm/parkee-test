@@ -44,8 +44,7 @@ export const Back = styled(IoIosArrowRoundBack)`
   }
 
   @media only screen and (max-width: ${breakpoints.medium}) {
-   top: 46px;
-  left: 54px
+    left: 32px;
   }
 `;
 
